@@ -311,3 +311,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /TDIN-e-Bank/nbproject/private/
+/TDIN-e-Bank/build/
+/TDIN-e-Bank/dist/
