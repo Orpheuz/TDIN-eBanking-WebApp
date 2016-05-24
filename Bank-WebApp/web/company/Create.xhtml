@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateCompanyTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateCompanyLabel_companyId}" for="companyId" />
+                    <h:inputText id="companyId" value="#{companyController.selected.companyId}" title="#{bundle.CreateCompanyTitle_companyId}" required="true" requiredMessage="#{bundle.CreateCompanyRequiredMessage_companyId}"/>
+                    <h:outputLabel value="#{bundle.CreateCompanyLabel_acronym}" for="acronym" />
+                    <h:inputText id="acronym" value="#{companyController.selected.acronym}" title="#{bundle.CreateCompanyTitle_acronym}" required="true" requiredMessage="#{bundle.CreateCompanyRequiredMessage_acronym}"/>
+                    <h:outputLabel value="#{bundle.CreateCompanyLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{companyController.selected.name}" title="#{bundle.CreateCompanyTitle_name}" required="true" requiredMessage="#{bundle.CreateCompanyRequiredMessage_name}"/>
+                    <h:outputLabel value="#{bundle.CreateCompanyLabel_stockValue}" for="stockValue" />
+                    <h:inputText id="stockValue" value="#{companyController.selected.stockValue}" title="#{bundle.CreateCompanyTitle_stockValue}" required="true" requiredMessage="#{bundle.CreateCompanyRequiredMessage_stockValue}"/>
+                    <h:outputLabel value="#{bundle.CreateCompanyLabel_stock}" for="stock" />
+                    <h:selectOneMenu id="stock" value="#{companyController.selected.stock}" title="#{bundle.CreateCompanyTitle_stock}" >
+                        <f:selectItems value="#{stockController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{companyController.create}" value="#{bundle.CreateCompanySaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{companyController.prepareList}" value="#{bundle.CreateCompanyShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateCompanyIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

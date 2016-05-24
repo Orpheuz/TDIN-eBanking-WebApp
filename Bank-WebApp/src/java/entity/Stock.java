@@ -8,18 +8,18 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,8 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Stock.findAll", query = "SELECT s FROM Stock s"),
-    @NamedQuery(name = "Stock.findByStockId", query = "SELECT s FROM Stock s WHERE s.stockId = :stockId"),
-    @NamedQuery(name = "Stock.findByForsale", query = "SELECT s FROM Stock s WHERE s.forsale = :forsale")})
+    @NamedQuery(name = "Stock.findByStockId", query = "SELECT s FROM Stock s WHERE s.stockId = :stockId")})
 public class Stock implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,25 +46,17 @@ public class Stock implements Serializable {
     private Integer stockId;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "forsale")
-    private boolean forsale;
-    @Basic(optional = false)
-    @NotNull
     @Lob
     @Size(min = 1, max = 16777215)
     @Column(name = "quantity")
     private String quantity;
-    @JoinTable(name = "operation_stock", joinColumns = {
-        @JoinColumn(name = "pk_fk_stock_id", referencedColumnName = "stock_id")}, inverseJoinColumns = {
-        @JoinColumn(name = "pk_fk_operation_id", referencedColumnName = "operation_id")})
-    @ManyToMany
-    private List<Operation> operationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stock")
+    private List<ClientStock> clientStockList;
     @JoinColumn(name = "fk_company_id", referencedColumnName = "company_id")
-    @ManyToOne
+    @OneToOne(optional = false)
     private Company fkCompanyId;
-    @JoinColumn(name = "fk_owner_id", referencedColumnName = "client_id")
-    @ManyToOne
-    private Client fkOwnerId;
+    @OneToMany(mappedBy = "fkStockId")
+    private List<Operation> operationList;
 
     public Stock() {
     }
@@ -74,9 +65,8 @@ public class Stock implements Serializable {
         this.stockId = stockId;
     }
 
-    public Stock(Integer stockId, boolean forsale, String quantity) {
+    public Stock(Integer stockId, String quantity) {
         this.stockId = stockId;
-        this.forsale = forsale;
         this.quantity = quantity;
     }
 
@@ -88,14 +78,6 @@ public class Stock implements Serializable {
         this.stockId = stockId;
     }
 
-    public boolean getForsale() {
-        return forsale;
-    }
-
-    public void setForsale(boolean forsale) {
-        this.forsale = forsale;
-    }
-
     public String getQuantity() {
         return quantity;
     }
@@ -105,12 +87,12 @@ public class Stock implements Serializable {
     }
 
     @XmlTransient
-    public List<Operation> getOperationList() {
-        return operationList;
+    public List<ClientStock> getClientStockList() {
+        return clientStockList;
     }
 
-    public void setOperationList(List<Operation> operationList) {
-        this.operationList = operationList;
+    public void setClientStockList(List<ClientStock> clientStockList) {
+        this.clientStockList = clientStockList;
     }
 
     public Company getFkCompanyId() {
@@ -121,12 +103,13 @@ public class Stock implements Serializable {
         this.fkCompanyId = fkCompanyId;
     }
 
-    public Client getFkOwnerId() {
-        return fkOwnerId;
+    @XmlTransient
+    public List<Operation> getOperationList() {
+        return operationList;
     }
 
-    public void setFkOwnerId(Client fkOwnerId) {
-        this.fkOwnerId = fkOwnerId;
+    public void setOperationList(List<Operation> operationList) {
+        this.operationList = operationList;
     }
 
     @Override

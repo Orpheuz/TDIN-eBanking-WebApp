@@ -6,7 +6,6 @@
 package service;
 
 import entity.Client;
-import entity.Operation;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author Leonardo
+ * @author Vitor
  */
 @Stateless
 @Path("entity.client")
@@ -89,10 +88,4 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
         return em;
     }
     
-    @GET
-    @Path("{id}/history")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Operation> findRange(@PathParam("id") Integer id) {
-        return super.find(id).getOperationList();
-    }
 }

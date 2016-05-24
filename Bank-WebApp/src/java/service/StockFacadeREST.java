@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author Leonardo
+ * @author Vitor
  */
 @Stateless
 @Path("entity.stock")

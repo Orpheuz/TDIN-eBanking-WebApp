@@ -22,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author Leonardo
+ * @author Vitor
  */
 @Stateless
 @Path("entity.operation")
@@ -88,23 +88,4 @@ public class OperationFacadeREST extends AbstractFacade<Operation> {
         return em;
     }
     
-    @GET
-    @Path("waiting")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Operation> findWaiting() {
-        List<Operation> list =  super.findAll();
-        List<Operation> wait =  super.findAll().subList(0, 0);
-        for (int i = 0; i < list.size(); i++) {
-            if("waiting".equals(list.get(i).getState()))
-                wait.add(list.get(i));
-        }
-        return wait;
-    }
-
-    @GET
-    @Path("{id}/state")
-    @Produces({MediaType.TEXT_PLAIN})
-    public String getstate(@PathParam("id") Integer id) {
-        return super.find(id).getState();
-    }
 }

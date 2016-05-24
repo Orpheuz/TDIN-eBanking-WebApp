@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,8 +54,8 @@ public class Client implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "email")
     private String email;
-    @OneToMany(mappedBy = "fkOwnerId")
-    private List<Stock> stockList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private List<ClientStock> clientStockList;
     @OneToMany(mappedBy = "fkOwnerId")
     private List<Operation> operationList;
 
@@ -96,12 +97,12 @@ public class Client implements Serializable {
     }
 
     @XmlTransient
-    public List<Stock> getStockList() {
-        return stockList;
+    public List<ClientStock> getClientStockList() {
+        return clientStockList;
     }
 
-    public void setStockList(List<Stock> stockList) {
-        this.stockList = stockList;
+    public void setClientStockList(List<ClientStock> clientStockList) {
+        this.clientStockList = clientStockList;
     }
 
     @XmlTransient
