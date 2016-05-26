@@ -79,7 +79,7 @@ body {
 					<div class="ob ape">
 						<div class="tn aol">
 							<a class="aop cn" href="index.html" style="margin-top: 20px;">
-								<span> Client Name</span>
+								<span id="clientName"> </span>
 							</a>
 						</div>
 					</div>
@@ -391,6 +391,18 @@ body {
 <script>
       // execute/clear BS loaders for docs
       $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+      $.ajax({
+      	url: "http://localhost:8080/Web-Bank/webresources/com.client/1",
+      	datatype: "application/xml",
+      	type: "GET",
+      	success: function (data) {;
+      		var name = data.getElementsByTagName("name")[0].innerHTML;
+      		$('#clientName').text(name);
+      	},
+      	error: function (x, y, z) {
+      		alert(x.responseText +"  " +x.status);
+      	}
+      });
   </script>
 </body>
 </html>
