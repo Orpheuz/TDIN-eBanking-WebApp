@@ -17,6 +17,7 @@ import javax.jms.JMSContext;
 import javax.jms.JMSRuntimeException;
 import javax.jms.Queue;
 
+
 /**
  *
  * @author Leonardo
@@ -48,6 +49,7 @@ public class SenderBean {
     }
 
     public void sendJMSMessageToMyQueue() {
+        
          try {
             String text = "Message from producer: " + messageText;
             context.createProducer().send(myQueue, text);

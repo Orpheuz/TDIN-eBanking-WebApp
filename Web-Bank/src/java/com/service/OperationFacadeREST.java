@@ -8,10 +8,17 @@ package com.service;
 import com.ClientStock;
 import com.Operation;
 import com.Stock;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -64,13 +71,37 @@ public class OperationFacadeREST extends AbstractFacade<Operation> {
                     
                     super.create(entity);
                 }
-            }
-        }
+            } 
+        } 
         else{
-            if(entity.getFkStockId().getQuantity()<entity.getQuantity())
+            System.out.println(entity.getFkStockId().getQuantity());
+            System.out.println(entity);
+            entity.setCreationDate(Date.from(Instant.now()));
+            if(entity.getFkStockId().getQuantity()>entity.getQuantity())
             {
+                
+            System.out.println("yes");
                 super.create(entity);
-            }
+            } 
+        }
+        
+        try {
+            
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost("localhost");
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
+            
+            channel.queueDeclare("hello", false, false, false, null);
+            String message = entity.getOperationId()+","+entity.getFkOwnerId().getName()+","+entity.getFkStockId().getName()+","+entity.getQuantity();
+            channel.basicPublish("", "hello", null, message.getBytes());
+            System.out.println(" [x] Sent '" + message + "'");
+            channel.close();
+            connection.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            Logger.getLogger(ClientFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -146,6 +177,8 @@ public class OperationFacadeREST extends AbstractFacade<Operation> {
     @Produces({MediaType.TEXT_PLAIN})
     public Boolean execute(@PathParam("id") Integer id) {
         Operation op = super.find(id);
+        if(op==null)
+            return false; 
         if (!"waiting".equals(op.getState())) {
             return false;
         }

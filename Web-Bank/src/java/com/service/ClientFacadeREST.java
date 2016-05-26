@@ -22,7 +22,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Leonardo
@@ -69,10 +75,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Client> findAll() {
-        SenderBean s=new SenderBean();
-        s.setMessageText("Nigger");
-        s.sendJMSMessageToMyQueue();
-        return super.findAll();
+            return super.findAll();
     }
 
     @GET
