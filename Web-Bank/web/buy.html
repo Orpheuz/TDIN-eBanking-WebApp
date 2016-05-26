@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+
+	<title>
+		TDIN - e-Banking WebApp
+	</title>
+
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+	<link href="assets/css/bootstrap-spinedit.css" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet">
+
+	<link href="assets/css/toolkit-inverse.css" rel="stylesheet">
+
+	<link href="assets/css/application.css" rel="stylesheet">
+
+	<style>
+
+		body {
+			width: 1px;
+			min-width: 100%;
+			*width: 100%;
+		}
+	</style>
+</head>
+
+
+<body>
+	<div class="bw">
+		<div class="fu">
+			<div class="ge aom">
+				<nav class="aot">
+					<div class="aon">
+						<button class="amy amz aoo" type="button" data-toggle="collapse" data-target="#nav-toggleable-sm">
+							<span class="ct">Toggle nav</span>
+						</button>
+						<a class="aop cn" href="index.html">
+							<span> Tdin - Banking WebApp</span>
+						</a>
+					</div>
+
+					<div class="collapse and" id="nav-toggleable-sm" style="margin-top: 40px;">
+						<ul class="nav of nav-stacked">
+							<li class="tq">Dashboards</li>
+							<li>
+								<a href="index.html">Overview</a>
+							</li>
+							<li>
+								<a href="profile.html">Profile</a>
+							</li>
+							<li>
+								<a href="stocks.html">Stocks</a>
+							</li>
+							<li class="active">
+								<a href="buy.html">Buy stocks</a>
+							</li>
+							<li>
+								<a href="sell.html">Sell stocks</a>
+							</li>
+						</ul>
+						<hr class="rw aky">
+					</div>
+				</nav>
+			</div>
+			<div class="hc aps">
+				<div class="apa">
+					<div class="apb">
+						<h6 class="apd">Dashboards</h6>
+						<h2 class="apc">Buy</h2>
+					</div>
+
+					<div class="ob ape">
+						<div class="tn aol">
+							<a class="aop cn" href="index.html" style="margin-top: 20px;">
+								<span> Client Name</span>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<hr class="aky"> 
+				<div class="row">
+					<div class="col-md-4">
+						<h3> Company: </h3>
+						<select class="form-control companySelect">
+							<option value="one">Google</option>
+							<option value="two">Spotify</option>
+							<option value="three">Apple</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<h3> Price: </h3>
+						<h3> 123 </h3>
+					</div>
+					<div class="col-md-4">
+						<h3> Quantity: </h3>
+						<input type="text" id="spinEditBuy" style="width: 80px" />
+					</div>
+				</div>
+				
+				<br>
+				
+			</div>
+		</div>
+	</div>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap-spinedit.js"></script>
+	<script src="assets/js/chart.js"></script>
+	<script src="assets/js/tablesorter.min.js"></script>
+	<script src="assets/js/toolkit.js"></script>
+	<script src="assets/js/application.js"></script>
+	<script>
+      // execute/clear BS loaders for docs
+      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+      $('#spinEditBuy').spinedit();
+  </script>
+</body>
+</html>
+
