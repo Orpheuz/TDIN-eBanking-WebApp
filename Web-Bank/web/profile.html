@@ -48,10 +48,7 @@ body {
 
 					<div class="collapse and" id="nav-toggleable-sm" style="margin-top: 40px;">
 						<ul class="nav of nav-stacked">
-							<li class="tq">Dashboards</li>
-							<li>
-								<a href="index.html">Overview</a>
-							</li>
+							<li class="tq">Menu</li>
 							<li class="active">
 								<a href="profile.html">Profile</a>
 							</li>
@@ -72,14 +69,16 @@ body {
 			<div class="hc aps">
 				<div class="apa">
 					<div class="apb">
-						<h6 class="apd">Dashboards</h6>
+						<h6 class="apd">e-Bank</h6>
 						<h2 class="apc">Profile </h2>
 					</div>
 
 					<div class="ob ape">
 						<div class="tn aol">
-							<a class="aop cn" href="index.html" style="margin-top: 20px;">
-								<span> Client Name</span>
+							<h6 class="apd">User</h6>
+							<a class="aop cn">
+								<select class="form-control userSelect">
+								</select>
 							</a>
 						</div>
 					</div>
@@ -92,9 +91,9 @@ body {
 					</div>
 
 					<div class="col-md-8">
-						<h4>Name: Zé Nabo</h4>
+						<h4 id="username"></h4>
 						<br>
-						<h4> Email: cenas@cenas.com </h4>
+						<h4 id="email"></h4>
 					</div>
 				</div>
 
@@ -107,47 +106,12 @@ body {
 								<tr>
 									<th class="header headerSortDown">Operation</th>
 									<th class="header">Company</th>
-									<th class="header">Description</th>
-									<th class="header">Date</th>
+									<th class="header">Value</th>
+									<th class="header">Type</th>
 									<th class="header">Quantity</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td><a href="#">#10001</a></td>
-									<td>First Last</td>
-									<td>Admin theme, marketing theme</td>
-									<td>01/01/2015</td>
-									<td>123</td>
-								</tr>
-								<tr>
-									<td><a href="#">#10002</a></td>
-									<td>Firstname Lastname</td>
-									<td>Admin theme</td>
-									<td>01/01/2015</td>
-									<td>132</td>
-								</tr>
-								<tr>
-									<td><a href="#">#10003</a></td>
-									<td>Name Another</td>
-									<td>Personal blog theme</td>
-									<td>01/01/2015</td>
-									<td>142</td>
-								</tr>
-								<tr>
-									<td><a href="#">#10004</a></td>
-									<td>One More</td>
-									<td>Marketing theme, personal blog theme, admin theme</td>
-									<td>01/01/2015</td>
-									<td>153</td>
-								</tr>
-								<tr>
-									<td><a href="#">#10005</a></td>
-									<td>Name Right Here</td>
-									<td>Personal blog theme, admin theme</td>
-									<td>01/02/2015</td>
-									<td>241</td>
-								</tr>
+							<tbody id="opTable">
 							</tbody>
 						</table>
 					</div>
@@ -157,147 +121,134 @@ body {
 
 				<div class="fu">
 					<div class="gr ali">
-						<div class="by">
+						<div id="stockPerc" class="by">
 							<h4 class="ty">
 								Stocks
 							</h4>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 62.4%;"></span>
-								<span class="dy dh">62.4%</span>
-								United States
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 15.0%;"></span>
-								<span class="dy dh">15.0%</span>
-								India
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 5.0%;"></span>
-								<span class="dy dh">5.0%</span>
-								United Kingdom
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 5.0%;"></span>
-								<span class="dy dh">5.0%</span>
-								Canada
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 4.5%;"></span>
-								<span class="dy dh">4.5%</span>
-								Russia
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 2.3%;"></span>
-								<span class="dy dh">2.3%</span>
-								Mexico
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 1.7%;"></span>
-								<span class="dy dh">1.7%</span>
-								Spain
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 1.5%;"></span>
-								<span class="dy dh">1.5%</span>
-								France
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 1.4%;"></span>
-								<span class="dy dh">1.4%</span>
-								South Africa
-							</a>
-
-							<a class="ph" href="#">
-								<span class="tz" style="width: 1.2%;"></span>
-								<span class="dy dh">1.2%</span>
-								Japan
-							</a>
-
 						</div>
-						<a href="#" class="ce apn ame">All countries</a>
-					</div>
-					<div class="gr ali">
-						<div class="by">
-							<h4 class="ty">
-								Most visited pages
-							</h4>
-
-							<a class="ph" href="#">
-								<span class="dy dh">3,929,481</span>
-								/ (Logged out)
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">1,143,393</span>
-								/ (Logged in)
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">938,287</span>
-								/tour
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">749,393</span>
-								/features/something
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">695,912</span>
-								/features/another-thing
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">501,938</span>
-								/users/username
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">392,842</span>
-								/page-title
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">298,183</span>
-								/some/page-slug
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">193,129</span>
-								/another/directory/and/page-title
-							</a>
-
-							<a class="ph" href="#">
-								<span class="dy dh">93,382</span>
-								/one-more/page/directory/file-name
-							</a>
-
-						</div>
-						<a href="#" class="ce apn ame">View all pages</a>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/chart.js"></script>
-	<script src="assets/js/tablesorter.min.js"></script>
-	<script src="assets/js/toolkit.js"></script>
-	<script src="assets/js/application.js"></script>
-	<script>
+		<script src="assets/js/jquery.min.js"></script>
+		<script>
       // execute/clear BS loaders for docs
       $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
-  </script>
+
+      $.ajax({
+      	url: "http://localhost:8080/Web-Bank/webresources/com.client/",
+      	datatype: "application/xml",
+      	type: "GET",
+      	success: function (data) {;
+      		var clients = data.getElementsByTagName("client");
+      		for(i = 0; i < clients.length; i++) {
+      			var name = data.getElementsByTagName("name")[i];
+      			var id = data.getElementsByTagName("clientId")[i];
+      			var opt = document.createElement("OPTION");
+      			opt.text = name.innerHTML;
+      			opt.id = id.innerHTML;
+      			var selectC = document.getElementsByClassName("userSelect")[0];
+      			selectC.add(opt);
+      		}
+      		var userID = localStorage.getItem("selectedUser");
+
+      		if(userID != null) {
+      			document.getElementById(userID).selected = true;
+      		}
+
+      		for(i = 0; i < clients.length; i++) {
+      			if(data.getElementsByTagName("clientId")[i].innerHTML == $(".userSelect option:selected").attr("id")) {
+      				document.getElementById("username").innerHTML = "Name: " + data.getElementsByTagName("name")[i].innerHTML;
+      				document.getElementById("email").innerHTML = "Email: " + data.getElementsByTagName("email")[i].innerHTML;
+      				break;
+      			}
+      		}
+
+      	},
+      	error: function (x, y, z) {
+      		alert(x.responseText +"  " +x.status);
+      	}
+      });
+
+$(".userSelect").change(function() {
+	localStorage.setItem("selectedUser", $(".userSelect option:selected").attr("id"));
+	console.log(localStorage.getItem("selectedUser"));
+	location.reload();
+});
+
+function getOpURL() {
+	return "http://localhost:8080/Web-Bank/webresources/com.client/" + localStorage.getItem("selectedUser") + "/history";
+}
+
+$.ajax({
+	url: getOpURL(),
+	datatype: "application/xml",
+	type: "GET",
+	success: function (data) {
+		var opTable = document.getElementById("opTable");
+		var operations = data.getElementsByTagName("operation");
+		for(i = 0; i < operations.length; i++) {
+			var row = opTable.insertRow(i);
+			var opID = row.insertCell(0);
+			var opCompany = row.insertCell(1);
+			var opValue = row.insertCell(2);
+			var opType = row.insertCell(3);
+			var opQuantity = row.insertCell(4);
+			opID.innerHTML = operations[i].children[3].innerHTML;
+			opCompany.innerHTML = operations[i].children[2].children[1].innerHTML;
+			opValue.innerHTML = operations[i].children[2].children[4].innerHTML;
+			if(operations[i].children[4].innerHTML == "false")
+				opType.innerHTML = "Buy";
+			else opType.innerHTML = "Sell";
+			opQuantity.innerHTML = operations[i].children[5].innerHTML;
+
+		}
+	},
+	error: function (x, y, z) {
+		alert(x.responseText +"  " +x.status);
+	}
+});
+/*<a class="ph" href="#">
+	<span class="tz" style="width: 1.2%;"></span>
+	<span class="dy dh">1.2%</span>
+	Japan
+</a>*/
+$.ajax({
+	url: "http://localhost:8080/Web-Bank/webresources/com.clientstock",
+	datatype: "application/xml",
+	type: "GET",
+	success: function (data) {
+		var cliStock = data.getElementsByTagName("clientStock");
+		for(i = 0; i < cliStock.length; i++){
+			if(cliStock[i].children[0].children[0].innerHTML == localStorage.getItem("selectedUser")) {
+				var stockPerc = document.getElementById("stockPerc");
+				var aElem = document.createElement("a");
+				aElem.className = "ph";
+				var division = cliStock[i].children[2].innerHTML / cliStock[i].children[3].children[2].innerHTML * 100;
+				var spanTz = document.createElement("span");
+				spanTz.className = "tz";
+				spanTz.style.width = division + "%";
+				var spanDy = document.createElement("span");
+				spanDy.className = "dy dh";
+				spanDy.innerHTML = division + "%";
+				aElem.appendChild(spanTz);
+				aElem.appendChild(spanDy);
+				aElem.innerHTML += cliStock[i].children[3].children[1].innerHTML;
+				stockPerc.appendChild(aElem);
+			}
+		}
+	},
+	error: function (x, y, z) {
+		alert(x.responseText +"  " +x.status);
+	}
+});
+
+</script>
+<script src="assets/js/chart.js"></script>
+<script src="assets/js/toolkit.js"></script>
+<script src="assets/js/tablesorter.min.js"></script>
+<script src="assets/js/application.js"></script>
 </body>
 </html>
 

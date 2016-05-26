@@ -49,10 +49,7 @@
 
 					<div class="collapse and" id="nav-toggleable-sm" style="margin-top: 40px;">
 						<ul class="nav of nav-stacked">
-							<li class="tq">Dashboards</li>
-							<li>
-								<a href="index.html">Overview</a>
-							</li>
+							<li class="tq">Menu</li>
 							<li>
 								<a href="profile.html">Profile</a>
 							</li>
@@ -73,14 +70,15 @@
 			<div class="hc aps">
 				<div class="apa">
 					<div class="apb">
-						<h6 class="apd">Dashboards</h6>
+						<h6 class="apd">e-Bank</h6>
 						<h2 class="apc">Sell</h2>
 					</div>
 
 					<div class="ob ape">
 						<div class="tn aol">
-							<a class="aop cn" href="index.html" style="margin-top: 20px;">
-								<span> Client Name</span>
+							<a class="aop cn" style="margin-top: 20px;">
+								<select class="form-control userSelect">
+								</select>
 							</a>
 						</div>
 					</div>
@@ -162,8 +160,40 @@
 	<script>
       // execute/clear BS loaders for docs
       $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
-	  for(i = 1; i < 6; i++)
-	  	$('#spinEdit' + i).spinedit();
+
+      $.ajax({
+      	url: "http://localhost:8080/Web-Bank/webresources/com.client/",
+      	datatype: "application/xml",
+      	type: "GET",
+      	success: function (data) {;
+      		var clients = data.getElementsByTagName("client");
+      		for(i = 0; i < clients.length; i++) {
+      			var name = data.getElementsByTagName("name")[i];
+      			var id = data.getElementsByTagName("clientId")[i];
+      			var opt = document.createElement("OPTION");
+      			opt.text = name.innerHTML;
+      			opt.id = id.innerHTML;
+      			var selectC = document.getElementsByClassName("userSelect")[0];
+      			selectC.add(opt);
+      		}
+      		var userID = localStorage.getItem("selectedUser");
+
+      		if(userID != null) {
+      			document.getElementById(userID).selected = true;
+      		}	
+      	},
+      	error: function (x, y, z) {
+      		alert(x.responseText +"  " +x.status);
+      	}
+      });
+
+      $(".userSelect").change(function() {
+      	localStorage.setItem("selectedUser", $(".userSelect option:selected").attr("id"));
+      	console.log(localStorage.getItem("selectedUser"));
+      	location.reload();
+      });
+      for(i = 1; i < 6; i++)
+      	$('#spinEdit' + i).spinedit();
   </script>
 </body>
 </html>
