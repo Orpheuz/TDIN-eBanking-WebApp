@@ -88,4 +88,18 @@ public class StockFacadeREST extends AbstractFacade<Stock> {
         return em;
     }
     
-}
+    @GET
+    @Path("{id}/change/{value}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public boolean changeVal(@PathParam("id") Integer id, @PathParam("value") Integer val) {
+        Stock s=super.find(id);
+        if(s!=null)
+        {
+            s.setStockValue(val);
+            getEntityManager().persist(s);
+            return true;
+        }
+        return false;
+    } 
+    
+} 

@@ -7,7 +7,6 @@ package com.service;
 
 import com.Client;
 import com.Operation;
-import com.SenderBean;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -84,7 +83,7 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     public List<Client> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
-
+  
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -100,7 +99,8 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     @GET
     @Path("{id}/history")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Collection<Operation> findRange(@PathParam("id") Integer id) {
+    public Collection<Operation> history(@PathParam("id") Integer id) {
         return super.find(id).getOperationCollection();
     }
 }
+ 

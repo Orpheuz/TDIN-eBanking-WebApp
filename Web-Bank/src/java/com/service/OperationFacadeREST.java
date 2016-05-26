@@ -5,6 +5,7 @@
  */
 package com.service;
 
+import com.Client;
 import com.ClientStock;
 import com.Operation;
 import com.Stock;
@@ -58,24 +59,22 @@ public class OperationFacadeREST extends AbstractFacade<Operation> {
         }
         if (entity.getOperationType())//venda
         {
-            ArrayList<ClientStock> l= new ArrayList<>(entity.getFkOwnerId().getClientStockCollection());
-            for (int i = 0; i < l.size(); i++) {
+            ArrayList<ClientStock> l= new ArrayList<>(getEntityManager().find(Client.class, entity.getFkOwnerId().getClientId()).getClientStockCollection());
+            for (int i = 0; i < l.size(); i++) { 
                 if(l.get(i).getStock().equals(entity.getFkStockId()))
                 {
                     if(l.get(i).getQuantity()<entity.getQuantity())
                         return;
-                     l.get(i).setQuantity( l.get(i).getQuantity()-entity.getQuantity());
+                    l.get(i).setQuantity( l.get(i).getQuantity()-entity.getQuantity());
                     getEntityManager().persist(l.get(i));
                     entity.getFkOwnerId().setClientStockCollection(l);
-                    getEntityManager().persist(entity.getFkOwnerId());
                     
+                    entity.setCreationDate(Date.from(Instant.now()));
                     super.create(entity);
                 }
             } 
         } 
         else{
-            System.out.println(entity.getFkStockId().getQuantity());
-            System.out.println(entity);
             entity.setCreationDate(Date.from(Instant.now()));
             if(entity.getFkStockId().getQuantity()>entity.getQuantity())
             {
@@ -93,7 +92,9 @@ public class OperationFacadeREST extends AbstractFacade<Operation> {
             Channel channel = connection.createChannel();
             
             channel.queueDeclare("hello", false, false, false, null);
-            String message = entity.getOperationId()+","+entity.getFkOwnerId().getName()+","+entity.getFkStockId().getName()+","+entity.getQuantity();
+            System.out.println(super.findAll().get(super.findAll().size()-1).getOperationId()+","+entity.getFkOwnerId().getName()+","+entity.getFkStockId().getName()+","+entity.getQuantity());
+            
+            String message = super.findAll().get(super.findAll().size()-1).getOperationId()+","+entity.getFkOwnerId().getName()+","+entity.getFkStockId().getName()+","+entity.getQuantity();
             channel.basicPublish("", "hello", null, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
             channel.close();
