@@ -89,14 +89,11 @@
 					<div class="col-md-3">
 						<h3> Company: </h3>
 						<select class="form-control companySelect">
-							<option value="one">Google</option>
-							<option value="two">Spotify</option>
-							<option value="three">Apple</option>
 						</select>
 					</div>
 					<div class="col-md-3">
 						<h3> Price: </h3>
-						<h3 style="display: inline"> 123 </h3> <a> <span class="glyphicon glyphicon-refresh"> </span> </a>
+						<h3 id="stockPrice" style="display: inline"> </h3> <a> <span id="refreshPrice" class="glyphicon glyphicon-refresh"> </span> </a>
 					</div>
 					<div class="col-md-3">
 						<h3> Quantity: </h3>
@@ -104,7 +101,7 @@
 					</div>
 					<div class="col-md-3">
 						<h3> Buy: </h3>
-						<button class="btn btn-primary" type="button" style="background-color: #1ca8dd"> Buy </button> 
+						<button id="buyBtn" class="btn btn-primary" type="button" style="background-color: #1ca8dd"> Buy </button> 
 					</div>
 				</div>
 				<br>
@@ -119,42 +116,176 @@
 	<script src="assets/js/toolkit.js"></script>
 	<script src="assets/js/application.js"></script>
 	<script>
-      // execute/clear BS loaders for docs
-      $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
 
-      $.ajax({
-      	url: "http://localhost:8080/Web-Bank/webresources/com.client/",
-      	datatype: "application/xml",
-      	type: "GET",
-      	success: function (data) {;
-      		var clients = data.getElementsByTagName("client");
-      		for(i = 0; i < clients.length; i++) {
-      			var name = data.getElementsByTagName("name")[i];
-      			var id = data.getElementsByTagName("clientId")[i];
-      			var opt = document.createElement("OPTION");
-      			opt.text = name.innerHTML;
-      			opt.id = id.innerHTML;
-      			var selectC = document.getElementsByClassName("userSelect")[0];
-      			selectC.add(opt);
-      		}
-      		var userID = localStorage.getItem("selectedUser");
+		$('#spinEditBuy').spinedit();
 
-      		if(userID != null) {
-      			document.getElementById(userID).selected = true;
-      		}	
-      	},
-      	error: function (x, y, z) {
-      		alert(x.responseText +"  " +x.status);
-      	}
-      });
+		function parseXML(val) {
+			if (document.implementation && document.implementation.createDocument) {
+				xmlDoc = new DOMParser().parseFromString(val, 'text/xml');
+			}
+			else if (window.ActiveXObject) {
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+				xmlDoc.loadXML(val);
+			}
+			else
+			{
+				alert('Your browser cant handle this script');
+				return null;
+			}
+			return xmlDoc;
+		}
 
-      $(".userSelect").change(function() {
-      	localStorage.setItem("selectedUser", $(".userSelect option:selected").attr("id"));
-      	console.log(localStorage.getItem("selectedUser"));
-      	location.reload();
-      });
-      $('#spinEditBuy').spinedit();
-  </script>
+		var client;
+
+		$.ajax({
+			url: "http://localhost:8080/Web-Bank/webresources/com.client/",
+			datatype: "application/xml",
+			async: false,
+			type: "GET",
+			success: function (data) {
+				var clients = data.getElementsByTagName("client");
+				for(i = 0; i < clients.length; i++) {
+					var name = data.getElementsByTagName("name")[i];
+					var id = data.getElementsByTagName("clientId")[i];
+					var opt = document.createElement("OPTION");
+					opt.text = name.innerHTML;
+					opt.id = id.innerHTML;
+					var selectC = document.getElementsByClassName("userSelect")[0];
+					selectC.add(opt);
+				}
+				var userID = localStorage.getItem("selectedUser");
+				for(i = 0; i < clients.length; i++) {
+					if(data.getElementsByTagName("clientId")[i].innerHTML == userID) {
+						var clientT = [];
+						clientT.push(data.getElementsByTagName("name")[i].innerHTML);
+						clientT.push(data.getElementsByTagName("email")[i].innerHTML);
+						client = clientT;
+						break; 
+					}
+				}
+				if(userID != null) {
+					document.getElementById(userID).selected = true;
+				}	
+			},
+			error: function (x, y, z) {
+				alert(x.responseText +"  " +x.status);
+			}
+		});
+
+$.ajax({
+	url: "http://localhost:8080/Web-Bank/webresources/com.stock/",
+	datatype: "application/xml",
+	async: false,
+	type: "GET",
+	success: function (data) {
+		var stocks = data.getElementsByTagName("stock");
+		for(i = 0; i < stocks.length; i++) {
+			var name = data.getElementsByTagName("name")[i];
+			var id = data.getElementsByTagName("stockId")[i];
+			var opt = document.createElement("OPTION");
+			opt.text = name.innerHTML;
+			opt.id = id.innerHTML;
+			var selectC = document.getElementsByClassName("companySelect")[0];
+			selectC.add(opt);
+		}
+		$("#stockPrice").html(data.getElementsByTagName("stockValue")[0]);
+	},
+	error: function (x, y, z) {
+		alert(x.responseText +"  " +x.status);
+	}
+});
+
+$("#refreshPrice").click(function() {
+	$.ajax({
+		url: "http://localhost:8080/Web-Bank/webresources/com.stock/" + $(".companySelect option:selected").attr("id"),
+		datatype: "application/xml",
+		async: false,
+		type: "GET",
+		success: function (data) {
+			$("#stockPrice").html(data.getElementsByTagName("stockValue"));
+		},
+		error: function (x, y, z) {
+			alert(x.responseText +"  " +x.status);
+		}
+	});
+});
+
+$(".companySelect").change(function() {
+	$.ajax({
+		url: "http://localhost:8080/Web-Bank/webresources/com.stock/" + $(".companySelect option:selected").attr("id"),
+		datatype: "application/xml",
+		async: false,
+		type: "GET",
+		success: function (data) {
+			$("#stockPrice").html(data.getElementsByTagName("stockValue"));
+		},
+		error: function (x, y, z) {
+			alert(x.responseText +"  " +x.status);
+		}
+	});
+});
+
+$(".userSelect").change(function() {
+	localStorage.setItem("selectedUser", $(".userSelect option:selected").attr("id"));
+	console.log(localStorage.getItem("selectedUser"));
+	location.reload();
+});
+
+$("#buyBtn").click(function () {
+	var stock;
+
+	$.ajax({
+		url: "http://localhost:8080/Web-Bank/webresources/com.stock/",
+		datatype: "application/xml",
+		async: false,
+		type: "GET",
+		success: function (data) {
+			var stocks = data.getElementsByTagName("stock");
+			for(i = 0; i < stocks.length; i++) {
+				if(stocks[i].children[1].innerHTML == $(".companySelect option:selected").html()) {
+					var stockT = [];
+					for(j = 0; j < 5; j++) {
+						stockT.push(stocks[i].children[j].innerHTML);
+					}
+					stock = stockT;
+					break;
+				}
+			}
+			return stockT;
+		},
+		error: function (x, y, z) {
+			alert(x.responseText +"  " +x.status);
+		}
+	});
+
+	var xmlPOST = "<?xml version='1.0' encoding='UTF-8'?><operation><fkOwnerId><clientId>" 
+	+ localStorage.getItem("selectedUser") + "</clientId><email>" + client[1] + "</email><name>" 
+	+ client[0] + "</name></fkOwnerId><fkStockId><acronym>" + stock[0] + "</acronym><name>" + stock[1] 
+	+ "</name><quantity>" + stock[2] + "</quantity><stockId>" + stock[3] + "</stockId><stockValue>" 
+	+ stock[4] + "</stockValue></fkStockId><operationId>1</operationId><operationType>false</operationType><quantity>" 
+	+ $("#spinEditBuy").val() + "</quantity><state>waiting</state></operation>";
+
+	var xmlData = parseXML(xmlPOST);
+
+	$.ajax({
+		url: "http://localhost:8080/Web-Bank/webresources/com.operation",
+		data: xmlData,
+		headers: {
+			"Content-Type":"application/xml"
+		},
+		type: "POST",
+		dataType: "application/xml",
+		processData: false,
+		success: function (data) {
+		},
+		error: function (x, y, z) {
+			alert(x.responseText +"  " +x.status);
+		}
+	});
+});
+
+$(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}});
+</script>
 </body>
 </html>
 
