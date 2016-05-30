@@ -113,4 +113,16 @@ public class ClientStockFacadeREST extends AbstractFacade<ClientStock> {
         return em;
     }
     
-}
+    @GET
+    @Path("client/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<ClientStock> clients(@PathParam("id") Integer id) {
+        List<ClientStock> l= super.findAll();
+        List<ClientStock> l2= super.findAll().subList(0, 0);
+        for (int i = 0; i < l.size(); i++) {
+            if(l.get(i).getClientStockPK().getPkFkClientId() == id)
+            l2.add(l.get(i));
+        } 
+        return l2;
+    }
+} 
