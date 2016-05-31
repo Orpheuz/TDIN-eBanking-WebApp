@@ -90,63 +90,22 @@
 						<table class="cl" data-sort="table">
 							<thead>
 								<tr>
-									<th class="header headerSortDown">Operation</th>
+									<th class="header headerSortDown">ID</th>
 									<th class="header">Company</th>
-									<th class="header">Description</th>
+									<th class="header">Value</th>
 									<th class="header">Quantity</th>
 									<th class="header">Sell</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td><a href="#">#10001</a></td>
-									<td>First Last</td>
-									<td>Admin theme, marketing theme</td>
-									<td>				
-										<input type="text" id="spinEdit1" />
-									</td>
-									<td> <button class="btn btn-primary sellBtn" type="button" style="background-color: #1ca8dd"> Sell </button> </td>
-								</tr>
-								<tr>
-									<td><a href="#">#10002</a></td>
-									<td>Firstname Lastname</td>
-									<td>Admin theme</td>
-									<td>
-										<input type="text" id="spinEdit2" />
-									</td>
-									<td> <button class="btn btn-primary sellBtn" type="button" style="background-color: #1ca8dd"> Sell </button> </td>
-								</tr>
-								<tr>
-									<td><a href="#">#10003</a></td>
-									<td>Name Another</td>
-									<td>Personal blog theme</td>
-									<td>
-										<input type="text" id="spinEdit3" />
-									</td>
-									<td> <button class="btn btn-primary sellBtn" type="button" style="background-color: #1ca8dd"> Sell </button> </td>
-								</tr>
-								<tr>
-									<td><a href="#">#10004</a></td>
-									<td>One More</td>
-									<td>Marketing theme, personal blog theme, admin theme</td>
-									<td>
-										<input type="text" id="spinEdit4" />
-									</td>
-									<td> <button class="btn btn-primary sellBtn" type="button" style="background-color: #1ca8dd"> Sell </button> </td>
-								</tr>
-								<tr>
-									<td><a href="#">#10005</a></td>
-									<td>Name Right Here</td>
-									<td>Personal blog theme, admin theme</td>
-									<td>
-										<input type="text" id="spinEdit5" />
-									</td>
-									<td> <button class="btn btn-primary sellBtn" type="button" style="background-color: #1ca8dd"> Sell </button> </td>
-								</tr>
+							<tbody id="cliStockTable">
 							</tbody>
 						</table>
 					</div>
 				</div>
+				<br>
+				<div id="alertMsg" class="row">
+				</div>
+				<br>
 			</div>
 		</div>
 	</div>
@@ -160,6 +119,22 @@
 	<script>
       // execute/clear BS loaders for docs
       $(function(){while(window.BS&&window.BS.loader&&window.BS.loader.length){(window.BS.loader.pop())()}})
+
+      function parseXML(val) {
+      	if (document.implementation && document.implementation.createDocument) {
+      		xmlDoc = new DOMParser().parseFromString(val, 'text/xml');
+      	}
+      	else if (window.ActiveXObject) {
+      		xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      		xmlDoc.loadXML(val);
+      	}
+      	else
+      	{
+      		alert('Your browser cant handle this script');
+      		return null;
+      	}
+      	return xmlDoc;
+      }
 
       $.ajax({
       	url: "http://localhost:8080/Web-Bank/webresources/com.client/",
@@ -192,9 +167,88 @@
       	console.log(localStorage.getItem("selectedUser"));
       	location.reload();
       });
-      for(i = 1; i < 6; i++)
-      	$('#spinEdit' + i).spinedit();
-  </script>
+
+      function getCliStockURL() {
+      	return "http://localhost:8080/Web-Bank/webresources/com.clientstock/client/" + localStorage.getItem("selectedUser");
+      }
+
+      function btnClick(data, i) {
+      	return function(){
+      		cliStocks = data.getElementsByTagName("clientStock");
+      		var xmlPOST = "<?xml version='1.0' encoding='UTF-8'?><operation><fkOwnerId><clientId>" 
+      		+ localStorage.getItem("selectedUser") + "</clientId><email>" + "asd" + "</email><name>" 
+      		+ cliStocks[i].children[0].children[2].innerHTML + "</name></fkOwnerId><fkStockId><acronym>" + cliStocks[i].children[3].children[1].innerHTML + "</acronym><name>" + cliStocks[i].children[3].children[1].innerHTML
+      		+ "</name><quantity>" + cliStocks[i].children[3].children[2].innerHTML + "</quantity><stockId>" + cliStocks[i].children[3].children[3].innerHTML + "</stockId><stockValue>" 
+      		+ cliStocks[i].children[3].children[4].innerHTML + "</stockValue></fkStockId><operationId>1</operationId><operationType>true</operationType><quantity>" 
+      		+ $("#spinEditSell" + (i+1)).val() + "</quantity><state>waiting</state></operation>";
+
+      		var xmlData = parseXML(xmlPOST);
+
+      		$.ajax({
+      			url: "http://localhost:8080/Web-Bank/webresources/com.operation",
+      			data: xmlData,
+      			headers: {
+      				"Content-Type":"application/xml"
+      			},
+      			type: "POST",
+      			dataType: "application/xml",
+      			processData: false,
+      			success: function (data) {
+      				var modalMsg = document.getElementById("alertMsg");
+      				modalMsg.innerHTML = "<div class='alert alert-success fade in'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> You have sold your stocks!</div>";
+      			},
+      			error: function (x, y, z) {
+      				alert(x.responseText +"  " +x.status);
+      			}
+      		});
+      	}
+      }
+
+      $.ajax({
+      	url: getCliStockURL(),
+      	datatype: "application/xml",
+      	type: "GET",
+      	async: false,
+      	success: function (data) {
+      		var cliStockTable = document.getElementById("cliStockTable");
+      		var cliStocks = data.getElementsByTagName("clientStock");
+      		for(i = 0; i < cliStocks.length; i++) {
+      			var row = cliStockTable.insertRow(i);
+      			var cliSID = row.insertCell(0);
+      			var cliSCompany = row.insertCell(1);
+      			var cliSValue = row.insertCell(2);
+      			var clieSQuantity = row.insertCell(3);
+      			var cliSSell = row.insertCell(4);
+      			cliSID.innerHTML = i;
+      			cliSCompany.innerHTML = cliStocks[i].children[3].children[1].innerHTML;
+      			cliSValue.innerHTML = cliStocks[i].children[3].children[4].innerHTML;
+      			clieSQuantity.innerHTML = "<input type='text' id='spinEditSell" + (i+1) + "' />";
+      			cliSSell.innerHTML = "<button id='sellBtn" + (i+1) + "' class='btn btn-primary sellBtn' type='button' style='background-color: #1ca8dd'> Sell </button>";
+
+      			$('#spinEditSell' +(i + 1)).spinedit();
+      		}
+      	},
+      	error: function (x, y, z) {
+      		alert(x.responseText +"  " +x.status);
+      	}
+      });
+
+$.ajax({
+	url: getCliStockURL(),
+	datatype: "application/xml",
+	type: "GET",
+	async: false,
+	success: function (data) {
+		var cliStocks = data.getElementsByTagName("clientStock");
+		for(i = 0; i < cliStocks.length; i++) {
+			$("[id^='sellBtn'").click(btnClick(data, i));
+		}
+	},
+	error: function (x, y, z) {
+		alert(x.responseText +"  " +x.status);
+	}
+});
+
+</script>
 </body>
 </html>
-

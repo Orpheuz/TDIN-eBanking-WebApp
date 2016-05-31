@@ -105,6 +105,9 @@
 					</div>
 				</div>
 				<br>
+				<div id="alertMsg" class="row">
+				</div>
+				<br>
 				<hr class="aky"> 
 			</div>
 		</div>
@@ -277,6 +280,8 @@ $("#buyBtn").click(function () {
 		dataType: "application/xml",
 		processData: false,
 		success: function (data) {
+			var modalMsg = document.getElementById("alertMsg");
+			modalMsg.innerHTML = "<div class='alert alert-success fade in'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> You successfully bought stocks!</div>";
 		},
 		error: function (x, y, z) {
 			alert(x.responseText +"  " +x.status);

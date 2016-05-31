@@ -86,58 +86,10 @@ body {
 				<hr class="aky">
 
 				<div class="anv alg ala">
-					<h3 class="anw anx">Quick stats</h3>
+					<h3 class="anw anx">Stock prices</h3>
 				</div>
 
 				<div class="fu apt">
-					<div class="gq gg ala">
-						<div class="apu ano">
-							<div class="alz">
-								<span class="anj">Microsoft</span>
-								<h2 class="ani">
-								123
-								</h2>
-								<hr class="ans akt">
-							</div>
-							<canvas id="sparkline1" width="378" height="94" class="apv" data-chart="spark-line" data-value="[{data:[28,68,41,43,96,45,100]}]" data-labels="['a','b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-						</div>
-					</div>
-					<div class="gq gg ala">
-						<div class="apu anr">
-							<div class="alz">
-								<span class="anj">Apple</span>
-								<h2 class="ani">
-								213
-								</h2>
-								<hr class="ans akt">
-							</div>
-							<canvas id="sparkline1" width="378" height="94" class="apv" data-chart="spark-line" data-value="[{data:[4,34,64,27,96,50,80]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-						</div>
-					</div>
-					<div class="gq gg ala">
-						<div class="apu anp">
-							<div class="alz">
-								<span class="anj">Google</span>
-								<h2 class="ani">
-								213
-								</h2>
-								<hr class="ans akt">
-							</div>
-							<canvas id="sparkline1" width="378" height="94" class="apv" data-chart="spark-line" data-value="[{data:[12,38,32,60,36,54,68]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-						</div>
-					</div>
-					<div class="gq gg ala">
-						<div class="apu anq">
-							<div class="alz">
-								<span class="anj">Spotify</span>
-								<h2 class="ani">
-								216
-								</h2>
-								<hr class="ans akt">
-							</div>
-							<canvas id="sparkline1" width="378" height="94" class="apv" data-chart="spark-line" data-value="[{data:[43,48,52,58,50,95,100]}]" data-labels="['a', 'b','c','d','e','f','g']" style="width: 189px; height: 47px;"></canvas>
-						</div>
-					</div>
 				</div>
 
 				<hr class="aky">
@@ -186,7 +138,30 @@ body {
       	console.log(localStorage.getItem("selectedUser"));
       	location.reload();
       });
-  </script>
+
+
+      $.ajax({
+      	url: "http://localhost:8080/Web-Bank/webresources/com.stock/",
+      	datatype: "application/xml",
+      	async: false,
+      	type: "GET",
+      	success: function (data) {
+      		var colorArrayClass = ["apu ano", "apu anr", "apu anp", "apu anq"];
+      		var graphArray = ["[28,68,41,43,96,45,100]", "[4,34,64,27,96,50,80]", "[12,38,32,60,36,54,68]", "[43,48,52,58,50,95,100]"];
+      		var stocks = data.getElementsByTagName("stock");
+      		var label = "['a','b','c','d','e','f','g']";
+      		for(i = 0; i < stocks.length; i++) {
+      			var acronym = data.getElementsByTagName("acronym")[i].innerHTML;
+      			var price = data.getElementsByTagName("stockValue")[i].innerHTML;
+      			var color = colorArrayClass[i % 4];
+      			var graph = graphArray[i % 4];
+      			$('.fu.apt').html($('.fu.apt').html() + "<div class='gq gg ala'><div class='" + color + "'><div class='alz'><span class='anj'>" + acronym + "</span><h2 class='ani'>" + price +	"</h2><hr class='ans akt'></div><canvas id='sparkline" + (i+1) +"' width='378' height='94' class='apv' data-chart='spark-line' data-value='[{data:" + graph + "}]'data-labels=" + label + " style='width: 189px; height: 47px;'></canvas></div></div>");
+      		}
+      	},
+      	error: function (x, y, z) {
+      		alert(x.responseText +"  " +x.status);
+      	}
+      });
+</script>
 </body>
 </html>
-
