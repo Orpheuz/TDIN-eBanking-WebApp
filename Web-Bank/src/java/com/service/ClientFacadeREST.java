@@ -100,7 +100,8 @@ public class ClientFacadeREST extends AbstractFacade<Client> {
     @Path("{id}/history")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Collection<Operation> history(@PathParam("id") Integer id) {
-        return super.find(id).getOperationCollection();
+        getEntityManager().getEntityManagerFactory().getCache().evictAll();
+        return super.find(id).getOperationCollection(); 
     }
 }
  

@@ -91,6 +91,7 @@ public class ClientStockFacadeREST extends AbstractFacade<ClientStock> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ClientStock> findAll() {
+        getEntityManager().getEntityManagerFactory().getCache().evictAll();
         return super.findAll();
     }
 
